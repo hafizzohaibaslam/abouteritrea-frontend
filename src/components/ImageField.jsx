@@ -50,14 +50,14 @@ const ImageField = ({ image, changeHandler, editAllowed }) => {
   }, [img]);
 
   return (
-    <div className="flex justify-left items-start flex-col">
-      <label htmlFor="image-upload" className="cursor-pointer">
-        <div className="w-[320px] h-[250px] flex justify-center items-center border-2 border-[#E5E5E5] rounded-[12px] overflow-hidden">
+    <div className="flex justify-left items-start flex-col w-full">
+      <label htmlFor="image-upload" className="cursor-pointer flex w-full">
+        <div className="ml-auto w-[320px] h-[320px] flex justify-center items-center border-2 border-[#E5E5E5] rounded-[12px] overflow-hidden">
           {imagePreview ? (
             <img
               src={"http://localhost:1337" + imagePreview}
               alt="Vehicle"
-              className="w-full h-full"
+              className="w-full h-full bg-cover"
             />
           ) : loading ? (
             "..."
@@ -65,6 +65,7 @@ const ImageField = ({ image, changeHandler, editAllowed }) => {
             <img
               src={"http://localhost:1337" + image || "/icons/placeholder.svg"}
               alt="placeholder"
+              className="bg-cover"
             />
           )}
         </div>

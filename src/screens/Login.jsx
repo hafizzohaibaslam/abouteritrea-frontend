@@ -5,7 +5,7 @@ import MyToast from "../utils/Toast";
 import { useNavigate } from "react-router-dom";
 import request from "../utils/request";
 
-const Login = () => {
+const Login = ({setLoggedIn}) => {
   const toast = useToast();
   const navigate = useNavigate();
   const myToast = useMemo(() => new MyToast(toast), [toast]);
@@ -48,6 +48,7 @@ const Login = () => {
       }
       localStorage.setItem("user", JSON.stringify(user));
       myToast.success("Successfully Logged into Application");
+      setLoggedIn(true)
       navigate("/");
     } catch (error) {
       console.log(error);

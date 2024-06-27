@@ -11,7 +11,7 @@ const Footer = () => {
               <a href="#" className="footer__social-link">
                 <img
                   className="footer__social-icon"
-                  src="./icons/facebook.svg"
+                  src="/icons/facebook.svg"
                   alt="Facebook"
                 />
               </a>
@@ -20,7 +20,7 @@ const Footer = () => {
               <a href="#" className="footer__social-link">
                 <img
                   className="footer__social-icon"
-                  src="./icons/twitter-logo-icon.svg"
+                  src="/icons/twitter-logo-icon.svg"
                   alt="Twitter"
                 />
               </a>
@@ -29,7 +29,7 @@ const Footer = () => {
               <a href="#" className="footer__social-link">
                 <img
                   className="footer__social-icon"
-                  src="./icons/linkedin.svg"
+                  src="/icons/linkedin.svg"
                   alt="LinkedIn"
                 />
               </a>
@@ -38,7 +38,7 @@ const Footer = () => {
               <a href="#" className="footer__social-link">
                 <img
                   className="footer__social-icon size-5"
-                  src="./icons/instagram.svg"
+                  src="/icons/instagram.svg"
                   alt="Instagram"
                 />
               </a>
@@ -115,7 +115,7 @@ const Footer = () => {
               <li className="flex items-center gap-x-2 text-sm text-white">
                 <img
                   className="size-5"
-                  src="./icons/home.svg"
+                  src="/icons/home.svg"
                   alt="home"
                 />
                 <span>1234 Elm Street, Anytown, USA</span>
@@ -123,7 +123,7 @@ const Footer = () => {
               <li className="flex items-center gap-x-2 text-sm text-white">
                 <img
                   className="size-5"
-                  src="./icons/email.svg"
+                  src="/icons/email.svg"
                   alt="email"
                 />
                 <span>john.doe@example.com</span>
@@ -131,13 +131,13 @@ const Footer = () => {
               <li className="flex items-center gap-x-2 text-sm text-white">
                 <img
                   className="size-5"
-                  src="./icons/phone.svg"
+                  src="/icons/phone.svg"
                   alt="phone"
                 />
                 <span>555-123-4567 </span>
               </li>
               <li className="flex items-center gap-x-2 text-sm text-white">
-                <img className="size-5" src=".assets/icons/fax.svg" alt="fax" />
+                <img className="size-5" src="/icons/fax.svg" alt="fax" />
                 <span>555-987-6543</span>
               </li>
             </ul>

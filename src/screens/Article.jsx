@@ -4,7 +4,7 @@ import { useToast } from "@chakra-ui/react";
 import MyToast from "../utils/Toast";
 import { useNavigate, useParams } from "react-router-dom";
 
-const Article = () => {
+const Article = ({ loggedIn }) => {
   // hools
   const { id } = useParams();
   const navigate = useNavigate();
@@ -13,7 +13,6 @@ const Article = () => {
 
   // local states
   const [article, setArticle] = useState([]);
-  const [image, setImage] = useState(null);
   const [comment, setComment] = useState("");
   const [articleId, setArticleId] = useState();
   const [user, setUser] = useState();
@@ -93,54 +92,53 @@ const Article = () => {
             src={`http://localhost:1337${article?.image?.data?.attributes?.url}`}
             alt="placeholder"
           />
-          <p className="article__description">
-            {article?.content}
-          </p>
+          <p className="article__description">{article?.content}</p>
         </div>
       </article>
+      {loggedIn && (
+        <div className="flex flex-col gap-5">
+          <h1 className="font-bold text-xl">Comments</h1>
 
-      <div className="flex flex-col gap-5">
-        <h1 className="font-bold text-xl">Comments</h1>
+          <div className="flex flex-col gap-2">
+            {
+              // {/* Card */}
+              article?.comments?.data?.map((comment, index) => (
+                <div key={index} className="border rounded-md py-2 px-4">
+                  <div className="flex justify-between text-gray-500">
+                    <h2 className=" text-black text-md font-semibold">
+                      {comment?.attributes?.author?.data?.attributes?.username}
+                    </h2>
 
-        <div className="flex flex-col gap-2">
-          {
-            // {/* Card */}
-            article?.comments?.data?.map((comment, index) => (
-              <div key={index} className="border rounded-md py-2 px-4">
-                <div className="flex justify-between text-gray-500">
-                  <h2 className=" text-black text-md font-semibold">
-                    {comment?.attributes?.author?.data?.attributes?.username}
-                  </h2>
-
-                  <p className="text-gray-500 text-xs">
-                    {comment?.attributes?.updatedAt?.slice(0, 10)}
+                    <p className="text-gray-500 text-xs">
+                      {comment?.attributes?.updatedAt?.slice(0, 10)}
+                    </p>
+                  </div>
+                  <p className=" text-sm mt-1 text-gray-600">
+                    {comment?.attributes?.content}
                   </p>
                 </div>
-                <p className=" text-sm mt-1 text-gray-600">
-                  {comment?.attributes?.content}
-                </p>
-              </div>
-            ))
-          }
-        </div>
+              ))
+            }
+          </div>
 
-        {/* Comment write Edit Div */}
-        <form onSubmit={submitCommentHandler} className="flex flex-col gap-1">
-          <h1 className="font-bold text-md">Write Comment</h1>
-          <input
-            type="text"
-            value={comment}
-            className="border border-black rounded outline-none p-2 text-sm"
-            onChange={(e) => setComment(e.target.value)}
-          />
-          <button
-            type="submit"
-            className=" bg-black text-white font-semibold px-4 py-1 rounded-md w-fit ml-auto"
-          >
-            Submit
-          </button>
-        </form>
-      </div>
+          {/* Comment write Edit Div */}
+          <form onSubmit={submitCommentHandler} className="flex flex-col gap-1">
+            <h1 className="font-bold text-md">Write Comment</h1>
+            <input
+              type="text"
+              value={comment}
+              className="border border-black rounded outline-none p-2 text-sm"
+              onChange={(e) => setComment(e.target.value)}
+            />
+            <button
+              type="submit"
+              className=" bg-black text-white font-semibold px-4 py-1 rounded-md w-fit ml-auto"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   );
 };

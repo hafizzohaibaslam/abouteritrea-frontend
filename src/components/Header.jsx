@@ -1,13 +1,8 @@
-import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ loggedIn, setLoggedIn, searchTerm, setSearchTerm }) => {
   const navigate = useNavigate();
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    setLoggedIn(localStorage.getItem("token-strapi"));
-  }, [localStorage]);
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="header-section">
       <header className="header bg-headerBg bg-contain min-h-[120px]">
@@ -27,13 +22,17 @@ const Header = () => {
               <Link to="#" className="topbar__link">
                 About
               </Link>
-              <Link to="/article/new" className="topbar__link">
-                Submit Article
-              </Link>
-              <Link to="/member" className="topbar__link">
-                Become a Member
-              </Link>
-              {localStorage.getItem("token-strapi") ? (
+              {user?.role === "Trusted" && (
+                <Link to="/article/new" className="topbar__link">
+                  Submit Article
+                </Link>
+              )}
+              {!loggedIn && (
+                <Link to="/member" className="topbar__link">
+                  Become a Member
+                </Link>
+              )}
+              {loggedIn ? (
                 <button
                   className=""
                   onClick={() => {
@@ -65,14 +64,16 @@ const Header = () => {
               role="search"
               aria-label="Search Bar"
             >
-              <form action="#" method="post" className="relative">
+              <div className="relative">
                 <input
                   type="text"
                   className="w-full outline-none border-0 p-2 text-sm placeholder:text-sm"
-                  placeholder="find a article"
-                  name="search"
+                  placeholder="find an article"
+                  name="searchTerm"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <button
+                {/* <button
                   type="submit"
                   className="absolute right-0 top-0 bottom-0 m-auto"
                 >
@@ -83,8 +84,8 @@ const Header = () => {
                   >
                     <path d="M 21 3 C 11.621094 3 4 10.621094 4 20 C 4 29.378906 11.621094 37 21 37 C 24.710938 37 28.140625 35.804688 30.9375 33.78125 L 44.09375 46.90625 L 46.90625 44.09375 L 33.90625 31.0625 C 36.460938 28.085938 38 24.222656 38 20 C 38 10.621094 30.378906 3 21 3 Z M 21 5 C 29.296875 5 36 11.703125 36 20 C 36 28.296875 29.296875 35 21 35 C 12.703125 35 6 28.296875 6 20 C 6 11.703125 12.703125 5 21 5 Z" />
                   </svg>
-                </button>
-              </form>
+                </button> */}
+              </div>
             </div>
             <div className="header__social-icons">
               <div className="flex items-center gap-x-2">

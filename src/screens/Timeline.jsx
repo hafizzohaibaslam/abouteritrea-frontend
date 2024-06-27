@@ -40,7 +40,7 @@ const Timeline = () => {
         <h3 className="timeline-title common-title text-lg font-bold w-full">
           Eritrean Timeline of Historical Events.
         </h3>
-        {user?.confirmed === true && (
+        {user?.role === "Trusted" && (
           <button
             onClick={() => navigate("/timeline/new")}
             className="bg-black text-white font-semibold px-4 py-1 rounded-md min-w-fit ml-auto h-fit"
