@@ -38,6 +38,7 @@ const Header = ({ loggedIn, setLoggedIn, searchTerm, setSearchTerm }) => {
                   onClick={() => {
                     localStorage.removeItem("token-strapi");
                     localStorage.removeItem("user");
+                    setLoggedIn(false)
                     navigate("/login");
                   }}
                 >
