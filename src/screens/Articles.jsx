@@ -13,13 +13,15 @@ const Articles = ({ searchTerm }) => {
 
   // Pagination
   const [count, setCount] = useState(1);
-  const [selectedValue, setSelectedValue] = useState();
+  const [selectedValue, setSelectedValue] = useState(10);
   const [totalCount, setTotalCount] = useState();
   const [pages, setPages] = useState(1);
 
   const fetchArticles = async () => {
     try {
-      const { data } = await request.get("/articles/?populate=*");
+      // const { data } = await request.get(`/articles/?populate=*`);
+      const { data } = await request.get(`/articles/?populate=*&pagination[page]=${count}&pagination[pageSize]=${selectedValue}`);
+      // const { data } = await request.get(`/articles/?populate=*&pagination[start]=${count}&pagination[limit]=${selectedValue}&pagination[withCount]=true`);
       setArticles(data.data);
       setFilteredArticles(data.data);
       setCount(data?.meta?.pagination?.page);
@@ -72,6 +74,7 @@ const Articles = ({ searchTerm }) => {
         count={count}
         setCount={setCount}
         selectedValue={selectedValue}
+        setSelectedValue={setSelectedValue}
         totalCount={totalCount}
         pages={pages}
       />

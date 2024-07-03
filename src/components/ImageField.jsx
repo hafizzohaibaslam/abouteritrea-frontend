@@ -63,7 +63,11 @@ const ImageField = ({ image, changeHandler, editAllowed }) => {
             "..."
           ) : (
             <img
-              src={"http://localhost:1337" + image || "/icons/placeholder.svg"}
+              src={
+                image
+                  ? "http://localhost:1337" + image
+                  : "/icons/placeholder.svg"
+              }
               alt="placeholder"
               className="bg-cover"
             />

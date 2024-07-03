@@ -40,7 +40,7 @@ const Timeline = () => {
         <h3 className="timeline-title common-title text-lg font-bold w-full">
           Eritrean Timeline of Historical Events.
         </h3>
-        {user?.role === "Trusted" && (
+        {(user?.role === "Trusted" || user?.role === "Admin") && (
           <button
             onClick={() => navigate("/timeline/new")}
             className="bg-black text-white font-semibold px-4 py-1 rounded-md min-w-fit ml-auto h-fit"
@@ -64,6 +64,7 @@ const Timeline = () => {
                 <span>{timeline?.attributes?.title}</span>
 
                 {(user?.role === "Trusted" ||
+                  user?.role === "Admin" ||
                   (user?.role === "Untrusted" &&
                     timeline?.attributes?.author?.data?.id === user.id)) && (
                   <button

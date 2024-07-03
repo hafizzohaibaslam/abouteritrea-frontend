@@ -5,7 +5,7 @@ import MyToast from "../utils/Toast";
 import { useNavigate } from "react-router-dom";
 import request from "../utils/request";
 
-const Login = ({setLoggedIn}) => {
+const Login = ({ setLoggedIn }) => {
   const toast = useToast();
   const navigate = useNavigate();
   const myToast = useMemo(() => new MyToast(toast), [toast]);
@@ -26,7 +26,11 @@ const Login = ({setLoggedIn}) => {
   const fetchRole = async () => {
     try {
       const { data } = await request.get("/users/me/?populate=*");
-      return data.role.name;
+      if (data?.role) {
+        return data.role.name;
+      } else {
+        return "Admin";
+      }
     } catch (error) {
       myToast.error("Something went wrong");
     }
@@ -40,22 +44,21 @@ const Login = ({setLoggedIn}) => {
         credentials
       );
       localStorage.setItem("token-strapi", data.jwt);
-      
+
       const role = await fetchRole();
       const user = {
         ...data.user,
-        role
-      }
+        role,
+      };
       localStorage.setItem("user", JSON.stringify(user));
       myToast.success("Successfully Logged into Application");
-      setLoggedIn(true)
+      setLoggedIn(true);
       navigate("/");
     } catch (error) {
       console.log(error);
       myToast.error(error.response.data.error.message);
     }
   };
-
 
   return (
     <section className="login w-full sm:w-7/12 md:w-8/12 py-10 sm:pr-5 flex flex-col gap-y-5">

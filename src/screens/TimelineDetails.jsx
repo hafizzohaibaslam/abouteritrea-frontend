@@ -264,6 +264,7 @@ const TimelineDetails = () => {
               }`}
             >
               {(user?.role === "Trusted" ||
+                user?.role === "Admin" ||
                 (user?.role === "Untrusted" &&
                   timeline.author?.data?.id === user.id)) && (
                 <button

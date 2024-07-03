@@ -61,6 +61,7 @@ const Article = ({ loggedIn }) => {
             <h2 className="article__title">{article.title}</h2>
 
             {(user?.role === "Trusted" ||
+              user?.role === "Admin" ||
               (user?.role === "Untrusted" &&
                 article.author?.data?.id === user.id)) && (
               <button onClick={() => navigate(`/article/edit/${id}`)}>
