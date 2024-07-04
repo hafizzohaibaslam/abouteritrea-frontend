@@ -5,6 +5,7 @@ import MyToast from "../utils/Toast";
 import request from "../utils/request";
 import ImageField from "../components/ImageField";
 import Spinner from "../components/Spinner";
+import Editor from "../components/Editor";
 
 const ArticleDetails = () => {
   const navigate = useNavigate();
@@ -73,6 +74,7 @@ const ArticleDetails = () => {
     const { title, content, category, image } = credentials;
     if (!title || !content || !category || !image) {
       myToast.warning("Fields cannot be empty");
+      setLoading(false);
       return;
     }
     try {
@@ -149,7 +151,7 @@ const ArticleDetails = () => {
               className="border rounded-md p-1 px-2 w-full outline-none"
             />
           </div>
-          <div className="flex items-start">
+          {/* <div className="flex items-start">
             <label className="text-lg font-semibold w-40">Content:</label>
             <textarea
               name="content"
@@ -157,7 +159,17 @@ const ArticleDetails = () => {
               onChange={handleChange}
               className="border rounded-md py-1 px-2 w-full outline-none"
             />
+          </div> */}
+          <div className="flex items-start">
+            <label className="text-lg font-semibold w-40">Content:</label>
+            {((id && credentials?.content?.length >= 1) || !id) && (
+              <Editor
+                credentials={credentials}
+                setCredentials={setCredentials}
+              />
+            )}
           </div>
+
           <div className="flex justify-between">
             <label className="text-lg font-semibold w-40">Category:</label>
             <select

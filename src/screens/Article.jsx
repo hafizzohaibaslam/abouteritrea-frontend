@@ -4,6 +4,7 @@ import { useToast } from "@chakra-ui/react";
 import MyToast from "../utils/Toast";
 import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import FroalaEditorView from "react-froala-wysiwyg/FroalaEditorView";
 
 const Article = ({ loggedIn }) => {
   // hools
@@ -92,14 +93,17 @@ const Article = ({ loggedIn }) => {
           </ul>
         </header>
         <div className="article__content">
-          <div className="h-40 w-40 flex items-center border rounded">
+          <div className="h-auto w-40 flex items-center border rounded over">
             <img
               className="w-full"
               src={`http://localhost:1337${article?.image?.data?.attributes?.url}`}
               alt="placeholder"
             />
           </div>
-          <p className="article__description">{article?.content}</p>
+          {/* <p className="article__description">{article?.content}</p> */}
+          <p className="article__description">
+            <FroalaEditorView model={article?.content} />
+          </p>
         </div>
       </article>
       {loggedIn && (

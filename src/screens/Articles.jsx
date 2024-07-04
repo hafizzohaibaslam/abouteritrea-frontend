@@ -4,6 +4,7 @@ import { useToast } from "@chakra-ui/react";
 import MyToast from "../utils/Toast";
 import { Link, useNavigate } from "react-router-dom";
 import Pagination from "../components/Pagination";
+import FroalaEditorView from "react-froala-wysiwyg/FroalaEditorView";
 
 const Articles = ({ searchTerm }) => {
   const toast = useToast();
@@ -64,7 +65,8 @@ const Articles = ({ searchTerm }) => {
           </header>
           <div className="article__content">
             <p className="article__description max-h-16 overflow-hidden">
-              {article.attributes?.content}
+              {/* {article.attributes?.content} */}
+              <FroalaEditorView model={article?.attributes?.content} />
             </p>
           </div>
         </article>
