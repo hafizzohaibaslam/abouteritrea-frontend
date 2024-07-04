@@ -2,10 +2,14 @@ import { useMemo, useState } from "react";
 import axios from "axios";
 import { useToast } from "@chakra-ui/react";
 import MyToast from "../utils/Toast";
+import { useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 const BecomeMember = () => {
+  const navigate = useNavigate();
   const toast = useToast();
   const myToast = useMemo(() => new MyToast(toast), [toast]);
+  const [loading, setLoading] = useState(false);
   const [credentials, setCredentials] = useState({
     username: "",
     email: "",
@@ -23,7 +27,7 @@ const BecomeMember = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const { data } = await axios.post(
         "http://localhost:1337/api/auth/local/register",
@@ -31,10 +35,14 @@ const BecomeMember = () => {
       );
       console.log("data: ", data);
       myToast.success("Successfully Logged into Application");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     } catch (error) {
       console.log(error);
       myToast.error(error.response.data.error.message);
     }
+    setLoading(false);
   };
   return (
     <section className="signup w-full sm:w-7/12 md:w-8/12 py-10 sm:pr-5 flex flex-col gap-y-5">
@@ -58,7 +66,7 @@ const BecomeMember = () => {
             onChange={changeHandler}
             name="username"
             id="username"
-            className="signup-form__input form__input"
+            className="signup-form__input form__input outline-none"
             required
           />
         </div>
@@ -72,7 +80,7 @@ const BecomeMember = () => {
             onChange={changeHandler}
             name="email"
             id="email"
-            className="signup-form__input form__input"
+            className="signup-form__input form__input outline-none"
             required
           />
         </div>
@@ -87,13 +95,15 @@ const BecomeMember = () => {
             onChange={changeHandler}
             name="password"
             id="password"
-            className="signup-form__input form__input"
+            className="signup-form__input form__input outline-none"
             required
           />
         </div>
 
         {/* Submit Button */}
-        <div>
+
+        <div className="flex justify-end gap-2 items-center">
+          <div>{loading && <Spinner />}</div>
           <button type="submit" className="form__submit">
             Become a Member
           </button>

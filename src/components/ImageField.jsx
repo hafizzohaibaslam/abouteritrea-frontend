@@ -57,7 +57,7 @@ const ImageField = ({ image, changeHandler, editAllowed }) => {
             <img
               src={"http://localhost:1337" + imagePreview}
               alt="Vehicle"
-              className="w-full h-full bg-cover"
+              className="w-full bg-cover"
             />
           ) : loading ? (
             "..."
@@ -69,7 +69,7 @@ const ImageField = ({ image, changeHandler, editAllowed }) => {
                   : "/icons/placeholder.svg"
               }
               alt="placeholder"
-              className="bg-cover"
+              className="w-full bg-cover"
             />
           )}
         </div>

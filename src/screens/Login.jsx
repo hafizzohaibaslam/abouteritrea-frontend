@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import MyToast from "../utils/Toast";
 import { useNavigate } from "react-router-dom";
 import request from "../utils/request";
+import Spinner from "../components/Spinner";
 
 const Login = ({ setLoggedIn }) => {
   const toast = useToast();
@@ -13,6 +14,7 @@ const Login = ({ setLoggedIn }) => {
     identifier: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -37,7 +39,7 @@ const Login = ({ setLoggedIn }) => {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    setLoading(true)
     try {
       const { data } = await axios.post(
         "http://localhost:1337/api/auth/local",
@@ -58,6 +60,7 @@ const Login = ({ setLoggedIn }) => {
       console.log(error);
       myToast.error(error.response.data.error.message);
     }
+    setLoading(false)
   };
 
   return (
@@ -84,7 +87,7 @@ const Login = ({ setLoggedIn }) => {
             onChange={changeHandler}
             name="identifier"
             id="identifier"
-            className="login-form__input form__input"
+            className="login-form__input form__input outline-none"
             required
           />
         </div>
@@ -98,12 +101,13 @@ const Login = ({ setLoggedIn }) => {
             name="password"
             onChange={changeHandler}
             id="password"
-            className="login-form__input form__input"
+            className="login-form__input form__input outline-none"
             required
           />
         </div>
 
-        <div>
+        <div className="flex justify-end gap-2 items-center">
+          <div>{loading && <Spinner />}</div>
           <button type="submit" className="form__submit">
             Sign In
           </button>

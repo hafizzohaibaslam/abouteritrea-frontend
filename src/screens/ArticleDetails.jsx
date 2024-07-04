@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import MyToast from "../utils/Toast";
 import request from "../utils/request";
 import ImageField from "../components/ImageField";
+import Spinner from "../components/Spinner";
 
 const ArticleDetails = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const ArticleDetails = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [categories, setCategories] = useState();
   const [article, setArticle] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
   const [credentials, setCredentials] = useState({
     title: "",
@@ -39,10 +41,12 @@ const ArticleDetails = () => {
   };
 
   const submitEditHandler = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const { title, content, category, image } = credentials;
     if (!title || !content || !category || !image) {
       myToast.warning("Fields cannot be empty");
+      setLoading(false);
       return;
     }
     try {
@@ -60,10 +64,12 @@ const ArticleDetails = () => {
       console.log("error: ", error);
       myToast.error(error.response.data.error.message);
     }
+    setLoading(false);
   };
 
   const submitNewHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const { title, content, category, image } = credentials;
     if (!title || !content || !category || !image) {
       myToast.warning("Fields cannot be empty");
@@ -77,10 +83,15 @@ const ArticleDetails = () => {
         },
       });
       setIsEditMode(false);
+      myToast.success("Article Edited Successfully!");
+      setTimeout(() => {
+        navigate(`/`);
+      }, 2000);
     } catch (error) {
       console.log("error: ", error);
       myToast.error(error.response.data.error.message);
     }
+    setLoading(false);
   };
 
   const fetchAllCategories = async () => {
@@ -117,10 +128,6 @@ const ArticleDetails = () => {
     }
     fetchAllCategories();
   }, [id]);
-
-  useEffect(() => {
-    console.log(credentials);
-  }, [credentials]);
 
   return (
     <div className="w-full sm:w-7/12 md:w-8/12 py-10 sm:pr-5 flex flex-col gap-y-5">
@@ -176,12 +183,16 @@ const ArticleDetails = () => {
               editAllowed={true}
             />
           </div>
-          <button
-            type="submit"
-            className=" bg-black text-white font-semibold px-4 py-1 rounded-md w-fit ml-auto"
-          >
-            {isEditMode ? "Update Article" : "Add Article"}
-          </button>
+
+          <div className="flex justify-end gap-2 items-center">
+            <div>{loading && <Spinner />}</div>
+            <button
+              type="submit"
+              className=" bg-black text-white font-semibold px-4 py-1 rounded-md w-fit"
+            >
+              {isEditMode ? "Update Article" : "Add Article"}
+            </button>
+          </div>
         </form>
       </article>
     </div>

@@ -3,6 +3,7 @@ import request from "../utils/request";
 import { useToast } from "@chakra-ui/react";
 import MyToast from "../utils/Toast";
 import { useNavigate, useParams } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 const Article = ({ loggedIn }) => {
   // hools
@@ -16,6 +17,7 @@ const Article = ({ loggedIn }) => {
   const [comment, setComment] = useState("");
   const [articleId, setArticleId] = useState();
   const [user, setUser] = useState();
+  const [loading, setLoading] = useState(false);
 
   const fetchArticle = async (id) => {
     try {
@@ -30,6 +32,7 @@ const Article = ({ loggedIn }) => {
 
   const submitCommentHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await request.post(`/comments/`, {
         data: {
@@ -45,6 +48,7 @@ const Article = ({ loggedIn }) => {
       console.log("error: ", error);
       myToast.error(error.response.data.error.message);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -88,11 +92,13 @@ const Article = ({ loggedIn }) => {
           </ul>
         </header>
         <div className="article__content">
-          <img
-            className="size-40 float-left mr-2 my-2"
-            src={`http://localhost:1337${article?.image?.data?.attributes?.url}`}
-            alt="placeholder"
-          />
+          <div className="h-40 w-40 flex items-center border rounded">
+            <img
+              className="w-full"
+              src={`http://localhost:1337${article?.image?.data?.attributes?.url}`}
+              alt="placeholder"
+            />
+          </div>
           <p className="article__description">{article?.content}</p>
         </div>
       </article>
@@ -131,12 +137,16 @@ const Article = ({ loggedIn }) => {
               className="border border-black rounded outline-none p-2 text-sm"
               onChange={(e) => setComment(e.target.value)}
             />
-            <button
-              type="submit"
-              className=" bg-black text-white font-semibold px-4 py-1 rounded-md w-fit ml-auto"
-            >
-              Submit
-            </button>
+
+            <div className="flex justify-end gap-2 items-center">
+              <div>{loading && <Spinner />}</div>
+              <button
+                type="submit"
+                className=" bg-black text-white font-semibold px-4 py-1 rounded-md w-fit"
+              >
+                Submit
+              </button>
+            </div>
           </form>
         </div>
       )}

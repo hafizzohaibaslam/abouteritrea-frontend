@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import MyToast from "../utils/Toast";
 import request from "../utils/request";
+import Spinner from "../components/Spinner";
 
 const TimelineDetails = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const TimelineDetails = () => {
   const [editEvent, setEditEvent] = useState(null);
   const [addEvent, setAddEvent] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [timeline, setTimeline] = useState();
   const [credentials, setCredentials] = useState({
     title: "",
@@ -36,11 +38,13 @@ const TimelineDetails = () => {
 
   const submitEditHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const { title, events } = credentials;
     console.log(credentials);
 
     if (!title || !events) {
       myToast.warning("Fields cannot be empty");
+      setLoading(false);
       return;
     }
     const filteredEvents = credentials.events.map(({ id, ...rest }) => rest);
@@ -59,13 +63,16 @@ const TimelineDetails = () => {
       console.log("error: ", error);
       myToast.error(error.response.data.error.message);
     }
+    setLoading(false);
   };
 
   const submitNewHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const { title, events } = credentials;
     if (!title || !events) {
       myToast.warning("Fields cannot be empty");
+      setLoading(false);
       return;
     }
     const filteredEvents = credentials.events.map(({ id, ...rest }) => rest);
@@ -84,6 +91,7 @@ const TimelineDetails = () => {
       console.log("error: ", error);
       myToast.error(error.response.data.error.message);
     }
+    setLoading(false);
   };
 
   const handleChange = (e) => {
@@ -343,12 +351,15 @@ const TimelineDetails = () => {
             </div>
           ))}
 
-          <button
-            type="submit"
-            className=" bg-black text-white font-semibold px-4 py-1 rounded-md w-fit ml-auto mt-10"
-          >
-            {id ? "Update Timeline" : "Create Timeline"}
-          </button>
+          <div className="flex justify-end gap-2 items-center mt-10">
+            <div>{loading && <Spinner />}</div>
+            <button
+              type="submit"
+              className=" bg-black text-white font-semibold px-4 py-1 rounded-md w-fit"
+            >
+              {id ? "Update Timeline" : "Create Timeline"}
+            </button>
+          </div>
         </form>
       </article>
     </div>
