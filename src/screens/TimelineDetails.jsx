@@ -40,7 +40,6 @@ const TimelineDetails = () => {
     e.preventDefault();
     setLoading(true);
     const { title, events } = credentials;
-    console.log(credentials);
 
     if (!title || !events) {
       myToast.warning("Fields cannot be empty");

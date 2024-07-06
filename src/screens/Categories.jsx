@@ -1,11 +1,4 @@
-import {
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Box,
-} from "@chakra-ui/react";
+
 import request from "../utils/request";
 import { useToast } from "@chakra-ui/react";
 import { useEffect, useMemo, useState } from "react";
@@ -42,34 +35,22 @@ const Categories = () => {
         complete.
       </span>
 
-      <Accordion allowMultiple>
+      <div className="grid grid-cols-4 gap-y-2">
         {categories?.map((category, index) => (
-          <AccordionItem key={index}>
-            <h2>
-              <AccordionButton>
-                <Box as="span" flex="1" textAlign="left">
-                  {category.attributes.name}
-                </Box>
-                <AccordionIcon />
-              </AccordionButton>
-            </h2>
-            <AccordionPanel pb={4}>
-              <ul className="category-list">
-                {category.attributes.articles.data.map((article, index) => (
-                  <li key={index}>
-                    <Link
-                      to={`/article/${article.id}`}
-                      className="category-link"
-                    >
-                      {article.attributes.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </AccordionPanel>
-          </AccordionItem>
+          <div key={index} className="border">
+            <h2 className="font-bold bg-gray-100 p-2">{category.attributes.name}</h2>
+            <ul className="category-list">
+              {category.attributes.articles.data.map((article, index) => (
+                <li key={index}>
+                  <Link to={`/article/${article.id}`} className="category-link">
+                    {article.attributes.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         ))}
-      </Accordion>
+      </div>
     </section>
   );
 };

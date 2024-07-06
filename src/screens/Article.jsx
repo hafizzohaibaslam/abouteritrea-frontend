@@ -78,7 +78,7 @@ const Article = ({ loggedIn }) => {
             <li className="article__tag">
               {article.category?.data?.attributes?.name}
             </li>
-            <li className="article__tag">{article.updatedAt}</li>
+            <li className="article__tag">{article.updatedAt?.slice(0,10)}</li>
             <li className="article__tag">
               by:{" "}
               <strong className="capitalize">
@@ -93,46 +93,42 @@ const Article = ({ loggedIn }) => {
           </ul>
         </header>
         <div className="article__content">
-          <div className="h-auto w-40 flex items-center border rounded over">
-            <img
-              className="w-full"
-              src={`http://localhost:1337${article?.image?.data?.attributes?.url}`}
-              alt="placeholder"
-            />
-          </div>
-          {/* <p className="article__description">{article?.content}</p> */}
+          <img
+            className="size-40 float-left mr-2 my-2"
+            src={`http://localhost:1337${article?.image?.data?.attributes?.url}`}
+            alt="placeholder"
+          />
           <p className="article__description">
             <FroalaEditorView model={article?.content} />
           </p>
         </div>
       </article>
-      {loggedIn && (
-        <div className="flex flex-col gap-5">
-          <h1 className="font-bold text-xl">Comments</h1>
+      <div className="flex flex-col gap-5">
+        <h1 className="font-bold text-xl">Comments</h1>
+        <div className="flex flex-col gap-2">
+          {
+            // {/* Card */}
+            article?.comments?.data?.map((comment, index) => (
+              <div key={index} className="border rounded-md py-2 px-4">
+                <div className="flex justify-between text-gray-500">
+                  <h2 className=" text-black text-md font-semibold">
+                    {comment?.attributes?.author?.data?.attributes?.username}
+                  </h2>
 
-          <div className="flex flex-col gap-2">
-            {
-              // {/* Card */}
-              article?.comments?.data?.map((comment, index) => (
-                <div key={index} className="border rounded-md py-2 px-4">
-                  <div className="flex justify-between text-gray-500">
-                    <h2 className=" text-black text-md font-semibold">
-                      {comment?.attributes?.author?.data?.attributes?.username}
-                    </h2>
-
-                    <p className="text-gray-500 text-xs">
-                      {comment?.attributes?.updatedAt?.slice(0, 10)}
-                    </p>
-                  </div>
-                  <p className=" text-sm mt-1 text-gray-600">
-                    {comment?.attributes?.content}
+                  <p className="text-gray-500 text-xs">
+                    {comment?.attributes?.updatedAt?.slice(0, 10)}
                   </p>
                 </div>
-              ))
-            }
-          </div>
+                <p className=" text-sm mt-1 text-gray-600">
+                  {comment?.attributes?.content}
+                </p>
+              </div>
+            ))
+          }
+        </div>
 
-          {/* Comment write Edit Div */}
+        {/* Comment write Edit Div */}
+        {loggedIn && (
           <form onSubmit={submitCommentHandler} className="flex flex-col gap-1">
             <h1 className="font-bold text-md">Write Comment</h1>
             <input
@@ -152,8 +148,8 @@ const Article = ({ loggedIn }) => {
               </button>
             </div>
           </form>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
