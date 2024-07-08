@@ -21,6 +21,10 @@ const TimelineDetails = () => {
     title: "",
     events: [],
   });
+  const [timelineCategories, setTimelineCategories] = useState([]);
+  const [loadingTimelineCategories, setLoadingTimelineCategories] =
+    useState(false);
+  const [selectedCategory, setSelectedCategory] = useState();
 
   const fetchTimeline = async (id) => {
     try {
@@ -34,6 +38,21 @@ const TimelineDetails = () => {
       console.log("error: ", error);
       myToast.error(error.response.data.error.message);
     }
+  };
+
+  const fetchTimelineCategories = async () => {
+    try {
+      const { data } = await request.get(`/timelines/?populate=*`);
+
+      setLoadingTimelineCategories(true);
+      setTimelineCategories(
+        data?.data?.map((t) => ({ id: t.id, title: t.attributes.title }))
+      );
+    } catch (error) {
+      console.log("error: ", error);
+      myToast.error(error.response.data.error.message);
+    }
+    setLoadingTimelineCategories(false);
   };
 
   const submitEditHandler = async (e) => {
@@ -160,14 +179,19 @@ const TimelineDetails = () => {
       fetchTimeline(id);
       setUser(JSON.parse(localStorage.getItem("user")));
     }
+    fetchTimelineCategories();
   }, [id]);
 
   useEffect(() => {
     const filteredEvents = credentials.events.map(({ id, ...rest }) => rest);
     console.log(filteredEvents);
-
-    // console.log(credentials);
   }, [credentials]);
+
+  useEffect(() => {
+    if (selectedCategory) {
+      fetchTimeline(selectedCategory);
+    }
+  }, [timelineCategories, selectedCategory]);
 
   return (
     <div className="w-full sm:w-7/12 md:w-8/12 py-10 sm:pr-5 flex flex-col gap-y-5">
@@ -181,13 +205,25 @@ const TimelineDetails = () => {
         >
           <div className="flex">
             <label className="text-lg font-semibold w-40">Category:</label>
-            <input
+            {/* <input
               type="text"
               name="title"
               value={credentials.title}
               onChange={handleChange}
               className="border rounded-md p-1 px-2 w-full outline-none"
-            />
+            /> */}
+            <select
+              name="title"
+              id="title"
+              className="border rounded-md p-1 px-2 w-full outline-none cursor-pointer"
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              {timelineCategories?.map((cat, index) => (
+                <option value={cat.id} key={index}>
+                  {cat.title}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="flex gap-2">
