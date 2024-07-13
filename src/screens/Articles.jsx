@@ -20,10 +20,11 @@ const Articles = ({ searchTerm }) => {
 
   const fetchArticles = async () => {
     try {
-      // const { data } = await request.get(`/articles/?populate=*`);
-      const { data } = await request.get(`/articles/?populate=*&pagination[page]=${count}&pagination[pageSize]=${selectedValue}`);
-      // const { data } = await request.get(`/articles/?populate=*&pagination[start]=${count}&pagination[limit]=${selectedValue}&pagination[withCount]=true`);
+      const { data } = await request.get(
+        `/articles/?populate=*&filters[approved][$eq]=true&pagination[page]=${count}&pagination[pageSize]=${selectedValue}`
+      );
       setArticles(data.data);
+      console.log("data: ", data.data);
       setFilteredArticles(data.data);
       setCount(data?.meta?.pagination?.page);
       setTotalCount(data?.meta?.pagination?.total);
@@ -40,7 +41,6 @@ const Articles = ({ searchTerm }) => {
     );
     setFilteredArticles(filteredArticles);
   }, [searchTerm]);
-
 
   useEffect(() => {
     fetchArticles();

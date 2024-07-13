@@ -24,6 +24,7 @@ const Article = ({ loggedIn }) => {
     try {
       const { data } = await request.get(`/articles/${id}/?populate=deep,3`);
       setArticle(data.data.attributes);
+      console.log("data: ", data.data.attributes);
       setArticleId(data.data.id);
     } catch (error) {
       console.log("error: ", error);
@@ -78,7 +79,7 @@ const Article = ({ loggedIn }) => {
             <li className="article__tag">
               {article.category?.data?.attributes?.name}
             </li>
-            <li className="article__tag">{article.updatedAt?.slice(0,10)}</li>
+            <li className="article__tag">{article.updatedAt?.slice(0, 10)}</li>
             <li className="article__tag">
               by:{" "}
               <strong className="capitalize">
