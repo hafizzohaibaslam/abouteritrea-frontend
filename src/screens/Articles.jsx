@@ -64,10 +64,9 @@ const Articles = ({ searchTerm }) => {
             </ul>
           </header>
           <div className="article__content">
-            <p className="article__description max-h-16 overflow-hidden">
-              {/* {article.attributes?.content} */}
+            <div className="article__description max-h-16 overflow-hidden">
               <FroalaEditorView model={article?.attributes?.content} />
-            </p>
+            </div>
           </div>
         </article>
       ))}
